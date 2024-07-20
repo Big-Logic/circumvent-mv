@@ -2,6 +2,8 @@ import {
   createNewItem,
   createNewMb,
   getActiveMbs,
+  getAllItems,
+  getSingleMbs,
   updateMbs,
 } from "@/app/api/route";
 
@@ -69,5 +71,14 @@ export async function createMb(mbName: string) {
     } else {
       //unknown errors
     }
+  }
+}
+
+export async function getSingleMbsAndItItems(docId: string) {
+  try {
+    const result = await Promise.all([getSingleMbs(docId), getAllItems(docId)]);
+    return { mbs: result[0], items: result[1] };
+  } catch (err) {
+    console.log(err);
   }
 }

@@ -27,6 +27,16 @@ export async function getActiveMbs() {
   return documents[0];
 }
 
+export async function getSingleMbs(docId: string) {
+  const { documents } = await databases.listDocuments(
+    `${dbId}`, // databaseId
+    `${mbsCollId}`, // collectionId
+    [Query.equal("$id", [docId])]
+  );
+
+  return documents[0];
+}
+
 export async function getAllMbs() {
   const { documents } = await databases.listDocuments(
     `${dbId}`, // databaseId

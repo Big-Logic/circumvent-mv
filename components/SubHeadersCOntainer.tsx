@@ -1,8 +1,8 @@
 import useApp from "@/hooks/useApp";
 import SubHeader from "./SubHeader,";
 
-function SubHeadersContainer() {
-  const { mbs } = useApp();
+function SubHeadersContainer({ mbs }) {
+  // const { mbs } = useApp();
 
   function handleEndDate() {
     const endDate =

@@ -1,8 +1,6 @@
 import CheckInput from "./CheckInput";
-import useApp from "@/hooks/useApp";
 
-function Form({}) {
-  const { documents: items } = useApp();
+function Form({ items, mbs }) {
   return (
     <form>
       <hr />
@@ -14,7 +12,7 @@ function Form({}) {
                 key={item.day}
                 className="shadow p-4 flex items-center justify-center border"
               >
-                <CheckInput item={item} />
+                <CheckInput item={item} mbs={mbs} />
               </li>
             ))}
           </>

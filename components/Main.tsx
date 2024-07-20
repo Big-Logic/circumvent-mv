@@ -5,7 +5,7 @@ import NewSetupButton from "./NewSetupButton";
 import AddInput from "./AddInput";
 
 function Main() {
-  const { mbs, isLoading, isError, error } = useApp();
+  const { mbs, documents, isLoading, isError, error } = useApp();
 
   if (isLoading)
     return (
@@ -30,8 +30,8 @@ function Main() {
       )}
       {mbs && !isLoading && !isError && (
         <>
-          <SubHeadersContainer />
-          <Form />
+          <SubHeadersContainer mbs={mbs} />
+          <Form items={documents} />
           <AddInput />
         </>
       )}

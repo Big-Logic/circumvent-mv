@@ -2,6 +2,10 @@ import { deleteMbs } from "@/app/api/route";
 import useAllMbsContext from "@/hooks/useAllMbsContext";
 import usePopup from "@/hooks/usePopup";
 import { VscLinkExternal, VscTrash, VscEdit } from "react-icons/vsc";
+import SubHeadersContainer from "../SubHeadersCOntainer";
+import Form from "../Form";
+import { useEffect, useState } from "react";
+import { getSingleMbsAndItItems } from "@/services/services";
 
 function CardButton({ children, handleClick, customStyle = "" }) {
   return (
@@ -52,14 +56,54 @@ function DeleteMbContent({ mbId }: { mbId: string }) {
   );
 }
 
+function ViewMbContent({ mbId }: { mbId: string }) {
+  const [{ isLoading, error, data }, setDoc] = useState({
+    isLoading: false,
+    error: null,
+    data: {},
+  });
+
+  useEffect(function () {
+    (async () => {
+      try {
+        setDoc((prev) => {
+          return { ...prev, isLoading: true };
+        });
+        const result = await getSingleMbsAndItItems(mbId);
+        setDoc((prev) => {
+          return { ...prev, isLoading: false, data: result };
+        });
+      } catch (err) {}
+    })();
+  }, []);
+  return (
+    <>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        "An error occured"
+      ) : (
+        <>
+          <SubHeadersContainer mbs={data.mbs} />
+          <Form items={data.items} mbs={data.mbs} />
+        </>
+      )}
+    </>
+  );
+}
+
+function EditMbContent({ mbId }: { mbId: string }) {
+  return <h1>Hello Edit</h1>;
+}
+
 function CardButtons({ mb }) {
   const { handlePopupOpen } = usePopup();
   function handleViewClick() {
-    handlePopupOpen(<h1>Hello view</h1>);
+    handlePopupOpen(<ViewMbContent mbId={mb["$id"]} />);
   }
 
   function handleEditClick() {
-    handlePopupOpen(<h1>Hello Edit</h1>);
+    handlePopupOpen(<EditMbContent mbId={mb["$id"]} />);
   }
 
   function handleDeleteClick() {

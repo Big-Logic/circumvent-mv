@@ -1,9 +1,18 @@
 import { updateItem } from "@/app/api/route";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-function CheckInput({ item }) {
+function CheckInput({ item, mbs }) {
   const [isChanging, setIsChanging] = useState(false);
   const [isChecked, setIsChecked] = useState(item.isActivated);
+
+  useEffect(
+    function () {
+      if (mbs.status === "inactive") {
+        setIsChanging(true);
+      }
+    },
+    [setIsChanging, mbs.status]
+  );
 
   async function handleChange(e) {
     //
@@ -30,7 +39,7 @@ function CheckInput({ item }) {
       <input
         type="checkbox"
         id={`day${item.day}`}
-        defaultChecked={item.isActivated}
+        // defaultChecked={item.isActivated}
         disabled={isChanging}
         className="w-6 h-6"
         onChange={handleChange}
