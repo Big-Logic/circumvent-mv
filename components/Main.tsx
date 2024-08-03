@@ -31,7 +31,7 @@ function Main() {
       {mbs && !isLoading && !isError && (
         <>
           <SubHeadersContainer mbs={mbs} />
-          <Form items={documents} />
+          <Form items={documents} mbs={mbs} />
           <AddInput />
         </>
       )}
