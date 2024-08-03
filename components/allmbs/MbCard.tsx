@@ -1,4 +1,4 @@
-import { deleteMbs, getSingleMbs } from "@/app/api/route";
+import { deleteMbs, getSingleMbs, updateMbs } from "@/app/api/route";
 import useAllMbsContext from "@/hooks/useAllMbsContext";
 import usePopup from "@/hooks/usePopup";
 import { VscLinkExternal, VscTrash, VscEdit } from "react-icons/vsc";
@@ -57,12 +57,23 @@ function DeleteMbContent({ mbId }: { mbId: string }) {
 }
 
 function EditName({ hd }) {
-  const [mbName, setMbName] = useState(hd);
+  const [mbName, setMbName] = useState(hd.name);
 
-  // const inputRef = useRef("");
+  //
+  const { handlePopupClose } = usePopup();
+  const { loadAllMbs } = useAllMbsContext();
+  //
 
   async function handleSubmit(e) {
     e.preventDefault();
+    try {
+      const dt = await updateMbs(hd["$id"], JSON.stringify({ name: mbName }));
+      setMbName(dt.name);
+      handlePopupClose();
+      loadAllMbs();
+    } catch (err) {
+      console.log(err);
+    }
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -71,6 +82,7 @@ function EditName({ hd }) {
         value={mbName}
         onChange={(e) => setMbName(e.target.value)}
       />
+      <button type="submit">Change</button>
     </form>
   );
 }
@@ -139,7 +151,7 @@ function EditMbContent({ mbId }: { mbId: string }) {
       ) : error ? (
         "An error occured"
       ) : (
-        <EditName hd={data.name} />
+        <EditName hd={data} />
       )}
     </>
   );
